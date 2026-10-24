@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust - Next-Gen Travel Booking</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .seat-btn {
+            transition: all 0.2s ease;
+        }
+        .seat-btn:hover:not(:disabled) {
+            transform: scale(1.1);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-full flex flex-col justify-between">
+
+    <!-- Header / Navigation -->
+    <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 flex items-center justify-center text-white shadow-md shadow-sky-200">
+                    <i class="fa-solid fa-paper-plane text-lg"></i>
+                </div>
+                <span class="text-xl font-bold bg-gradient-to-r from-sky-700 to-cyan-600 bg-clip-text text-transparent">Wanderlust</span>
+            </div>
+
+            <!-- Mode Switcher Tabs -->
+            <nav class="hidden md:flex space-x-1 bg-slate-100 p-1 rounded-xl text-sm font-medium">
+                <button onclick="switchTransport('flight')" id="nav-flight" class="mode-tab px-4 py-2 rounded-lg transition-all flex items-center space-x-2 bg-white text-sky-700 shadow-sm">
+                    <i class="fa-solid fa-plane"></i><span>Flights</span>
+                </button>
+                <button onclick="switchTransport('train')" id="nav-train" class="mode-tab px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all flex items-center space-x-2">
+                    <i class="fa-solid fa-train"></i><span>Trains</span>
+                </button>
+                <button onclick="switchTransport('bus')" id="nav-bus" class="mode-tab px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all flex items-center space-x-2">
+                    <i class="fa-solid fa-bus"></i><span>Buses</span>
+                </button>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <button class="text-slate-600 hover:text-slate-900 text-sm font-medium hidden sm:block">My Trips</button>
+                <button class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded

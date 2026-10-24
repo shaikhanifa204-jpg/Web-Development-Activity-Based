@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriBite - Healthy Recipes & Nutrition Planner</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nutrition: {
+                            50: '#f0fdf4',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="bg-nutrition-600 text-white p-2 rounded-xl flex items-center justify-center shadow-md">
+                    <i class="fa-solid fa-leaf text-lg"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tight text-slate-900">Nutri<span class="text-nutrition-600">Bite</span></span>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
+                <a href="#" class="text-nutrition-600 font-semibold">Recipes</a>
+                <a href="#meal-plans" class="hover:text-nutrition-600 transition">Meal Plans</a>
+                <a href="#categories" class="hover:text-nutrition-600 transition">Categories</a>
+                <a href="#tips" class="hover:text-nutrition-600 transition">Healthy Tips</a>
+            </nav>
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleCalculatorModal()" class="hidden sm:flex items-center space-x-1.5 bg-nutrition-50 text-nutrition-700 text-sm font-medium px-3.5 py-2 rounded-lg border border-nutrition-200 hover:bg-nutrition-100 transition">
+                    <i class="fa-solid fa-calculator"></i>
+                    <span>Calorie Calc</span>
+                </button>
+                <button class="bg-nutrition-600 hover:bg-nutrition-700 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm transition">Get Started</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-emerald-900 via-nutrition-700 to-teal-800 py-12 px-4 sm:px-6 lg:px-8 text-white">
+            <div class="max-w-4xl mx-auto text-center space-y-4">
+                <span class="inline-block bg-white/10 backdrop-blur-md text-emerald-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Fuel Your Body Right</span>
+                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">Wholesome Recipes & Custom Nutrition Plans</h1>
+                <p class="text-emerald-100 text-sm sm:text-base max-w-2xl mx-auto">Discover nutrient-dense meals with exact calorie counts, ingredient lists, and easy preparation guidelines tailored for your healthy lifestyle.</p>
+                
+                <!-- Search Filter Bar -->
+                <div class="bg-white text-slate-800 rounded-2xl shadow-xl p-3 sm:p-4 mt-6 max-w-2xl mx-auto flex flex-col sm:flex-row gap-3">
+                    <div class="flex items-center flex-grow bg-slate-50 border border-slate-200 rounded-xl px-3 py-2">
+                        <i class="fa-solid fa-magnifying-glass text-slate-400 mr-2"></i>
+                        <input type="text" id="recipe-search" oninput="filterRecipes()" placeholder="Search recipes (e.g. Quinoa, Avocado, Smoothie)..." class="bg-transparent w-full focus:outline-none text-sm text-slate-900">
+                    </div>
+                    <select id="category-filter" onchange="filterRecipes()" class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm font-medium text-slate-700 focus:outline-none cursor-pointer">
+                        <option value="all">All Categories</option>
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Lunch">Lunch</option>
+                        <option value="Dinner">Dinner</option>
+                        <option value="Smoothie">Smoothie / Snack</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Food Categories Quick Pills -->
+        <section id="categories" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-slate-900">Explore Categories</h2>
+                <span class="text-xs text-slate-500 font-medium">Click to filter</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div onclick="setCategoryFilter('Breakfast')" class="bg-white border border-slate-200 hover:border-nutrition-500 p-4 rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer flex items-center space-x-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center font-bold text-base group-hover:bg-nutrition-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-bowl-food"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-sm text-slate-900">Breakfast</h3>
+                        <p class="text-[11px] text-slate-500">Energizing starts</p>
+                    </div>
+                </div>
+                <div onclick="setCategoryFilter('Lunch')" class="bg-white border border-slate-200 hover:border-nutrition-500 p-4 rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer flex items-center space-x-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-nutrition-600 flex items-center justify-center font-bold text-base group-hover:bg-nutrition-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-sm text-slate-900">Lunch</h3>
+                        <p class="text-[11px] text-slate-500">Balanced midday</p>
+                    </div>
+                </div>
+                <div onclick="setCategoryFilter('Dinner')" class="bg-white border border-slate-200 hover:border-nutrition-500 p-4 rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer flex items-center space-x-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-base group-hover:bg-nutrition-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-moon"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-sm text-slate-900">Dinner</h3>
+                        <p class="text-[11px] text-slate-500">Light & cozy</p>
+                    </div>
+                </div>
+                <div onclick="setCategoryFilter('Smoothie')" class="bg-white border border-slate-200 hover:border-nutrition-500 p-4 rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer flex items-center space-x-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-base group-hover:bg-nutrition-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-blender"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-sm text-slate-900">Smoothies & Snacks</h3>
+                        <p class="text-[11px] text-slate-500">Quick boost</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recipes Cards Grid Section -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Nutritious Recipe Collection</h2>
+                    <p class="text-xs text-slate-500">Carefully curated macros and wholesome ingredients</p>
+                </div>
+                <span id="recipe-count" class="text-xs font-semibold bg-slate-200 px-2.5 py-1 rounded-full text-slate-700">6 recipes</span>
+            </div>
+
+            <!-- Responsive Cards Grid -->
+            <div id="recipes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamically populated via JavaScript -->
+            </div>
+        </section>
+
+        <!-- Meal Plans & Healthy Eating Tips Section -->
+        <section id="meal-plans" class="bg-slate-100 py-12 px-4 sm:px-6 lg:px-8 mt-12 border-t border-slate-200">
+            <div class="max-w-7xl mx-auto space-y-12">
+                
+                <!-- Weekly Meal Plan Layout -->
+                <div>
+                    <div class="text-center max-w-xl mx-auto mb-8">
+                        <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Balanced Daily Meal Plan</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">Sample structured menu designed to hit optimal macro targets with stable energy levels.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Breakfast Plan -->
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-xs font-bold uppercase tracking-wider text-nutrition-600 bg-nutrition-50 px-2.5 py-1 rounded-md">Breakfast</span>
+                                    <span class="text-xs font-bold text-slate-500"><i class="fa-solid fa-fire text-amber-500 mr-1"></i> 380 kcal</span>
+                                </div>
+                                <h3 class="font-bold text-slate-900 text-base mb-1">Avocado Toast with Poached Egg</h3>
+                                <p class="text-xs text-slate-500 mb-4">Whole grain sourdough topped with mashed avocado, chili flakes, and protein-rich egg.</p>
+                            </div>
+                            <div class="border-t border-slate-100 pt-3 flex items-center justify-between text-xs text-slate-600 font-medium">
+                                <span>Protein: 16g</span>
+                                <span>Carbs: 32g</span>
+                                <span>Fats: 18g</span>
+                            </div>
+                        </div>
+
+                        <!-- Lunch Plan -->
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-xs font-bold uppercase tracking-wider text-nutrition-600 bg-nutrition-50 px-2.5 py-1 rounded-md">Lunch</span>
+                                    <span class="text-xs font-bold text-slate-500"><i class="fa-solid fa-fire text-amber-500 mr-1"></i> 520 kcal</span>
+                                </div>
+                                <h3 class="font-bold text-slate-900 text-base mb-1">Mediterranean Quinoa Bowl</h3>
+                                <p class="text-xs text-slate-500 mb-4">Fluffy quinoa mixed with chickpeas, cucumber, cherry tomatoes, olives, and lemon dressing.</p>
+                            </div>
+                            <div class="border-t border-slate-100 pt-3 flex items-center justify-between text-xs text-slate-600 font-medium">
+                                <span>Protein: 21g</span>
+                                <span>Carbs: 64g</span>
+                                <span>Fats: 14g</span>
+                            </div>
+                        </div>
+
+                        <!-- Dinner Plan -->
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-xs font-bold uppercase tracking-wider text-nutrition-600 bg-nutrition-50 px-2.5 py-1 rounded-md">Dinner</span>
+                                    <span class="text-xs font-bold text-slate-500"><i class="fa-solid fa-fire text-amber-500 mr-1"></i> 450 kcal</span>
+                                </div>
+                                <h3 class="font-bold text-slate-900 text-base mb-1">Baked Herb Salmon & Asparagus</h3>
+                                <p class="text-xs text-slate-500 mb-4">Omega-3 rich salmon fillet seasoned with garlic herbs, served alongside roasted tender asparagus spears.</p>
+                            </div>
+                            <div class="border-t border-slate-100 pt-3 flex items-center justify-between text-xs text-slate-600 font-medium">
+                                <span>Protein: 34g</span>
+                                <span>Carbs: 10g</span>
+                                <span>Fats: 22g</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Healthy Eating Tips Grid -->
+                <div id="tips" class="pt-6">
+                    <div class="text-center max-w-xl mx-auto mb-8">
+                        <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Healthy Eating Tips</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">Expert guidelines for sustainable nutrition and mindful eating habits.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-50 text-nutrition-600 flex items-center justify-center font-bold mb-3">
+                                <i class="fa-solid fa-droplet"></i>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-900 mb-1">Stay Hydrated</h4>
+                            <p class="text-xs text-slate-500">Drink at least 2.5 to 3 liters of water daily to boost metabolism and cognitive focus.</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-50 text-nutrition-600 flex items-center justify-center font-bold mb-3">
+                                <i class="fa-solid fa-seedling"></i>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-900 mb-1">Prioritize Fiber</h4>
+                            <p class="text-xs text-slate-500">Include leafy greens, whole grains, and legumes to support gut health and satiety.</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-50 text-nutrition-600 flex items-center justify-center font-bold mb-3">
+                                <i class="fa-solid fa-plate-wheat"></i>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-900 mb-1">Mindful Portions</h4>
+                            <p class="text-xs text-slate-500">Use smaller plates and listen to fullness cues to naturally regulate calorie intake without strict diets.</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-50 text-nutrition-600 flex items-center justify-center font-bold mb-3">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-900 mb-1">Consistent Timing</h4>
+                            <p class="text-xs text-slate-500">Eat meals at regular intervals to maintain stable blood sugar levels and prevent energy crashes.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-500">
+        <p>&copy; 2026 NutriBite Inc. Promoting healthy lifestyles and evidence-based nutrition.</p>
+    </footer>
+
+    <!-- Recipe Details Modal -->
+    <div id="recipe-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 max-h-[90vh] flex flex-col">
+            <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <div>
+                    <span id="modal-category" class="text-[10px] font-bold uppercase tracking-wider text-nutrition-600 bg-nutrition-50 px-2 py-0.5 rounded">Breakfast</span>
+                    <h3 id="modal-title" class="text-lg font-bold text-slate-900 mt-1">Recipe Title</h3>
+                </div>
+                <button onclick="closeRecipeModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto space-y-6 text-sm">
+                <!-- Calorie & Macros Badge -->
+                <div class="grid grid-cols-4 gap-2 bg-emerald-50/60 p-3.5 rounded-xl border border-emerald-100 text-center">
+                    <div>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold">Calories</p>
+                        <p id="modal-calories" class="font-extrabold text-nutrition-700 text-base">380</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold">Protein</p>
+                        <p id="modal-protein" class="font-bold text-slate-800">16g</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold">Carbs</p>
+                        <p id="modal-carbs" class="font-bold text-slate-800">32g</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold">Fats</p>
+                        <p id="modal-fats" class="font-bold text-slate-800">14g</p>
+                    </div>
+                </div>
+
+                <!-- Ingredient List -->
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-2 flex items-center space-x-2">
+                        <i class="fa-solid fa-basket-shopping text-nutrition-600"></i>
+                        <span>Ingredient List</span>
+                    </h4>
+                    <ul id="modal-ingredients" class="space-y-1.5 text-slate-600 pl-5 list-disc text-xs sm:text-sm">
+                        <!-- Populated via JS -->
+                    </ul>
+                </div>
+
+                <!-- Preparation Guide -->
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-2 flex items-center space-x-2">
+                        <i class="fa-solid fa-fire-burner text-nutrition-600"></i>
+                        <span>Preparation Steps</span>
+                    </h4>
+                    <ol id="modal-steps" class="space-y-2 text-slate-600 pl-5 list-decimal text-xs sm:text-sm">
+                        <!-- Populated via JS -->
+                    </ol>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end">
+                <button onclick="closeRecipeModal()" class="bg-slate-800 text-white px-5 py-2 rounded-xl text-xs font-semibold hover:bg-slate-900 transition">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calorie Estimator / Calculator Modal -->
+    <div id="calculator-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200">
+            <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <h3 class="font-bold text-slate-900 text-base">Daily Calorie & Macro Target</h3>
+                <button onclick="toggleCalculatorModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4 text-sm">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Your Goal</label>
+                    <select id="calc-goal" class="w-full border border-slate-300 rounded-xl p-2.5 bg-slate-50 text-slate-800 font-medium focus:outline-none focus:ring-1 focus:ring-nutrition-500">
+                        <option value="maintain">Maintain Weight</option>
+                        <option value="lose">Weight Loss (Fat Deficit)</option>
+                        <option value="gain">Muscle Gain (Surplus)</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Weight (kg)</label>
+                        <input type="number" id="calc-weight" value="70" class="w-full border border-slate-300 rounded-xl p-2.5 bg-slate-50 text-slate-800 font-medium focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Activity Level</label>
+                        <select id="calc-activity" class="w-full border border-slate-300 rounded-xl p-2.5 bg-slate-50 text-slate-800 font-medium focus:outline-none">
+                            <option value="1.2">Sedentary (Little/no exercise)</option>
+                            <option value="1.4">Moderate (3-4 days/week)</option>
+                            <option value="1.6">Active (Daily exercise)</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="calc-result" class="hidden bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-center">
+                    <p class="text-xs text-slate-600 font-medium">Estimated Daily Target</p>
+                    <p id="calc-calories-val" class="text-2xl font-extrabold text-nutrition-700 mt-1">2,150 kcal</p>
+                </div>
+                <button onclick="calculateCalories()" class="w-full bg-nutrition-600 hover:bg-nutrition-700 text-white font-semibold py-3 rounded-xl shadow-md transition text-xs uppercase tracking-wider">Calculate Target</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Mock Data for Recipes
+        const recipes = [
+            {
+                id: 1,
+                title: "Avocado & Poached Egg Sourdough",
+                category: "Breakfast",
+                calories: 380,
+                protein: "16g",
+                carbs: "32g",
+                fats: "18g",
+                time: "15 mins",
+                image: "fa-solid fa-bread-slice",
+                ingredients: ["1 slice whole grain sourdough", "1 ripe avocado", "1 organic free-range egg", "Red pepper flakes & sea salt", "Lemon juice"],
+                steps: ["Toast the sourdough slice until crisp.", "Mash the avocado in a bowl with lemon juice, salt, and pepper.", "Poach the egg in gently simmering water for 3 minutes.", "Spread avocado mash over toast and top with the poached egg."]
+            },
+            {
+                id: 2,
+                title: "Mediterranean Quinoa Buddha Bowl",
+                category: "Lunch",
+                calories: 520,
+                protein: "21g",
+                carbs: "64g",
+                fats: "14g",
+                time: "25 mins",
+                image: "fa-solid fa-bowl-rice",
+                ingredients: ["1 cup cooked quinoa", "1/2 cup canned chickpeas, rinsed", "Cherry tomatoes & cucumber slices", "Feta cheese crumbles", "Olive oil & lemon dressing"],
+                steps: ["Cook quinoa according to package instructions.", "Arrange quinoa in a bowl and top with chickpeas, tomatoes, and cucumbers.", "Add crumbled feta cheese.", "Drizzle with olive oil and lemon juice dressing before serving."]
+            },
+            {
+                id: 3,
+                title: "Baked Herb Salmon with Asparagus",
+                category: "Dinner",
+                calories: 450,
+                protein: "34g",
+                carbs: "10g",
+                fats: "22g",
+                time: "30 mins",
+                image: "fa-solid fa-fish",
+                ingredients: ["1 salmon fillet (approx. 180g)", "1 bunch fresh asparagus spears", "2 cloves minced garlic", "1 tbsp olive oil", "Fresh dill & lemon slices"],
+                steps: ["Preheat oven to 200°C (400°F).", "Place salmon and trimmed asparagus on a baking sheet.", "Brush with olive oil, minced garlic, salt, and pepper.", "Bake for 12-15 minutes until salmon flakes easily with a fork."]
+            },
+            {
+                id: 4,
+                title: "Berry Green Power Smoothie",
+                category: "Smoothie",
+                calories: 280,
+                protein: "14g",
+                carbs: "42g",
+                fats: "6g",
+                time: "5 mins",
+                image: "fa-solid fa-glass-water",
+                ingredients: ["1 cup fresh spinach leaves", "1/2 cup frozen mixed berries", "1 scoop plant protein powder", "1 cup almond milk", "1 tbsp chia seeds"],
+                steps: ["Add almond milk and spinach to the blender, blend until smooth.", "Add frozen berries, protein powder, and chia seeds.", "Blend on high speed for 45 seconds until creamy and serve cold."]
+            },
+            {
+                id: 5,
+                title: "Greek Yogurt Berry Parfait",
+                category: "Breakfast",
+                calories: 310,
+                protein: "20g",
+                carbs: "38g",
+                fats: "8g",
+                time: "10 mins",
+                image: "fa-solid fa-jar",
+                ingredients: ["1 cup low-fat Greek yogurt", "1/2 cup fresh blueberries & strawberries", "2 tbsp granola", "1 tsp raw organic honey"],
+                steps: ["Layer half of the Greek yogurt in a glass jar.", "Add a layer of mixed berries and granola.", "Add remaining yogurt and top with remaining berries, granola, and honey drizzle."]
+            },
+            {
+                id: 6,
+                title: "Grilled Chicken & Sweet Potato Mash",
+                category: "Dinner",
+                calories: 490,
+                protein: "40g",
+                carbs: "45g",
+                fats: "12g",
+                time: "35 mins",
+                image: "fa-solid fa-drumstick-bite",
+                ingredients: ["1 chicken breast, marinated", "1 medium sweet potato, boiled & mashed", "Steamed broccoli florets", "1 tsp olive oil & rosemary"],
+                steps: ["Grill the marinated chicken breast for 6-8 minutes per side until cooked through.", "Mash boiled sweet potato with a touch of olive oil and rosemary.", "Serve grilled chicken alongside sweet potato mash and steamed broccoli."]
+            }
+        ];
+
+        let activeCategory = 'all';
+
+        // Render Recipes Grid
+        function renderRecipes() {
+            const query = document.getElementById('recipe-search').value.toLowerCase();
+            const grid = document.getElementById('recipes-grid');
+            
+            const filtered = recipes.filter(r => {
+                const matchesCategory = activeCategory === 'all' || r.category === activeCategory;
+                const matchesSearch = r.title.toLowerCase().includes(query) || r.category.toLowerCase().includes(query);
+                return matchesCategory && matchesSearch;
+            });
+
+            document.getElementById('recipe-count').innerText = `${filtered.length} recipe${filtered.length !== 1 ? 's' : ''}`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400 text-sm">No recipes found matching your search.</div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(r => `
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-nutrition-600 bg-nutrition-50 px-2.5 py-1 rounded-md">${r.category}</span>
+                            <span class="text-xs font-semibold text-slate-500 flex items-center space-x-1">
+                                <i class="fa-regular fa-clock"></i> <span>${r.time}</span>
+                            </span>
+                        </div>
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-nutrition-600 flex items-center justify-center text-base group-hover:bg-nutrition-600 group-hover:text-white transition">
+                                <i class="${r.image}"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-base leading-snug">${r.title}</h3>
+                        </div>
+                        <div class="grid grid-cols-4 gap-1 bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-center mb-4 text-xs">
+                            <div>
+                                <span class="text-[9px] text-slate-400 block font-bold uppercase">Cal</span>
+                                <span class="font-bold text-nutrition-700">${r.calories}</span>
+                            </div>
+                            <div>
+                                <span class="text-[9px] text-slate-400 block font-bold uppercase">Prot</span>
+                                <span class="font-semibold text-slate-700">${r.protein}</span>
+                            </div>
+                            <div>
+                                <span class="text-[9px] text-slate-400 block font-bold uppercase">Carbs</span>
+                                <span class="font-semibold text-slate-700">${r.carbs}</span>
+                            </div>
+                            <div>
+                                <span class="text-[9px] text-slate-400 block font-bold uppercase">Fats</span>
+                                <span class="font-semibold text-slate-700">${r.fats}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="openRecipeModal(${r.id})" class="w-full bg-nutrition-50 hover:bg-nutrition-600 text-nutrition-700 hover:text-white text-xs font-semibold py-2.5 rounded-xl transition border border-nutrition-200 hover:border-transparent">
+                        View Recipe & Ingredients
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Category Filter from Quick Pills
+        function setCategoryFilter(category) {
+            activeCategory = category;
+            document.getElementById('category-filter').value = category;
+            renderRecipes();
+        }
+
+        function filterRecipes() {
+            activeCategory = document.getElementById('category-filter').value;
+            renderRecipes();
+        }
+
+        // Recipe Details Modal
+        function openRecipeModal(id) {
+            const recipe = recipes.find(r => r.id === id);
+            if (!recipe) return;
+
+            document.getElementById('modal-category').innerText = recipe.category;
+            document.getElementById('modal-title').innerText = recipe.title;
+            document.getElementById('modal-calories').innerText = recipe.calories;
+            document.getElementById('modal-protein').innerText = recipe.protein;
+            document.getElementById('modal-carbs').innerText = recipe.carbs;
+            document.getElementById('modal-fats').innerText = recipe.fats;
+
+            document.getElementById('modal-ingredients').innerHTML = recipe.ingredients.map(i => `<li>${i}</li>`).join('');
+            document.getElementById('modal-steps').innerHTML = recipe.steps.map(s => `<li>${s}</li>`).join('');
+
+            document.getElementById('recipe-modal').classList.remove('hidden');
+        }
+
+        function closeRecipeModal() {
+            document.getElementById('recipe-modal').classList.add('hidden');
+        }
+
+        // Calorie Calculator Modal Toggle & Logic
+        function toggleCalculatorModal() {
+            const modal = document.getElementById('calculator-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function calculateCalories() {
+            const weight = parseFloat(document.getElementById('calc-weight').value) || 70;
+            const activity = parseFloat(document.getElementById('calc-activity').value) || 1.4;
+            const goal = document.getElementById('calc-goal').value;
+
+            // BMR approximation (Mifflin-St Jeor simplified)
+            let bmr = weight * 22; 
+            let tdee = bmr * activity;
+
+            if (goal === 'lose') tdee -= 400;
+            if (goal === 'gain') tdee += 300;
+
+            const finalCalories = Math.round(tdee);
+            document.getElementById('calc-calories-val').innerText = `${finalCalories.toLocaleString()} kcal`;
+            document.getElementById('calc-result').classList.remove('hidden');
+        }
+
+        // Initial Load
+        renderRecipes();
+    </script>
+</body>
+</html>
